@@ -13,7 +13,7 @@ import {
 import { UploadService } from './upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('upload')
+@Controller('file')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
@@ -21,6 +21,11 @@ export class UploadController {
   @Get(':id')
   countUniqueWords( @Param('id', ParseIntPipe) id: number) {
     return this.uploadService.countUniqueWords(id);
+  }
+
+  @Get(':id/word')
+  countWords( @Param('id', ParseIntPipe) id: number) {
+    return this.uploadService.countWords(id);
   }
 
   @Get(':id/word/:word')

@@ -48,11 +48,22 @@ export class UploadService {
     let words = await this.prisma.words.count({
       where: { fileId: id, count: { lt: 2 } },
     });
+    if(!words) return { data : 0}
     return { data: words };
+  }
+  async countWords(id) {
+    let words = await this.prisma.words.aggregate({
+      where: { fileId: id },
+      _sum: {
+        count: true,
+      }
+    });
+    if(!words) return { data : 0}
+    return { data: words._sum.count };
   }
   async findTopKWords(id, word) {    
     let wordData = await this.prisma.words.findFirst({ where: { fileId: id, word } });
-    
+    if(!wordData) return { data : 0}
     return { data: wordData.count };
   }
 }
